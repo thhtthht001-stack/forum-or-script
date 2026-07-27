@@ -58,7 +58,7 @@
             // --- функции для работы с выбранными серверами ---
             function getSelectedServers() {
                 const saved = localStorage.getItem(STORAGE_PREFIX + 'servers');
-                return saved ? JSON.parse(saved) : [31, 32, 33, 34, 35];
+                return saved ? JSON.parse(saved) : [35];
             }
 
             // --- функция для создания кнопок ---
@@ -145,7 +145,7 @@
                     overlay = document.createElement('div'); overlay.className = 'fnp-modal-overlay';
                     overlay.innerHTML = `
                         <div class="fnp-modal">
-                            <div class="fnp-modal-header">Выбор серверов (1-91)</div>
+                            <div class="fnp-modal-header">Выбор серверов (35)</div>
                             <div class="fnp-modal-body"></div>
                             <div class="fnp-modal-footer">
                                 <button class="fnp-btn fnp-btn-вторичный" id="fnp-cancel">Отмена</button>
