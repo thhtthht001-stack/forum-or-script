@@ -2,7 +2,7 @@
 // @name         BR Panel (Integrated Header)
 // @namespace    http://tampermonkey.net/
 // @version      3.3
-// @description  Плавающая панель заменена кнопками в заголовке. Динамический выбор сервера, инструмент сравнения IP-адресов.
+// @description  Плавающая панель заменена кнопками в заголовке. Только сервер Грозный.
 // @author       Black Russia & kumiho
 // @match        https://forum.blackrussia.online/*
 // @grant        none
@@ -29,30 +29,18 @@
         (function() {
             const STORAGE_PREFIX = 'br_panel_header_';
 
-            // --- ДАННЫЕ О РАЗДЕЛАХ (восстановлены, теперь 35 серверов с заглушками) ---
-            const DATA_TECH = [];
-            const DATA_TECH_COMPLAINT = [];
-            const DATA_PLAYER_COMPLAINT = [];
+            // --- ДАННЫЕ О РАЗДЕЛАХ (только Грозный) ---
+            const DATA_TECH = [
+                { text: 'ГРОЗНЫЙ (1)', link: 'https://forum.blackrussia.online/forums/РП-биографии.1594/', color: '#8B008B' }
+            ];
 
-            // Генерируем данные для 35 серверов (можно заменить на реальные ссылки)
-            for (let i = 1; i <= 35; i++) {
-                const serverName = `Сервер ${i}`;
-                DATA_TECH.push({
-                    text: `${serverName} (${i})`,
-                    link: `https://forum.blackrussia.online/forums/РП-биографии.${1500 + i}/`,
-                    color: '#8B008B'
-                });
-                DATA_TECH_COMPLAINT.push({
-                    text: `${serverName} (${i})`,
-                    link: `https://forum.blackrussia.online/forums/РП-ситуации.${1500 + i}/`,
-                    color: '#0000CD'
-                });
-                DATA_PLAYER_COMPLAINT.push({
-                    text: `${serverName} (${i})`,
-                    link: `https://forum.blackrussia.online/forums/Жалобы-на-игроков.${1500 + i}/`,
-                    color: '#DC143C'
-                });
-            }
+            const DATA_TECH_COMPLAINT = [
+                { text: 'ГРОЗНЫЙ (1)', link: 'https://forum.blackrussia.online/forums/РП-ситуации.1593/', color: '#0000CD' }
+            ];
+
+            const DATA_PLAYER_COMPLAINT = [
+                { text: 'ГРОЗНЫЙ (1)', link: 'https://forum.blackrussia.online/forums/Жалобы-на-игроков.1614/', color: '#DC143C' }
+            ];
 
             const OPS_LINK = {
                 text: 'ОПС',
@@ -61,19 +49,9 @@
                 glow: true
             };
 
-            const SERVER_LIST = DATA_TECH.map((item, index) => {
-                const match = item.text.match(/(.*?) \((\d+)\)/);
-                return {
-                    id: index + 1,
-                    name: match ? match[1] : `Сервер ${index + 1}`,
-                    fullName: item.text
-                };
-            });
-
-            // --- Функции для работы с выбранными серверами ---
+            // --- Всегда возвращаем только сервер с id = 1 (Грозный) ---
             function getSelectedServers() {
-                const saved = localStorage.getItem(STORAGE_PREFIX + 'servers');
-                return saved ? JSON.parse(saved) : [35];
+                return [1];
             }
 
             // --- Функция создания кнопок ---
@@ -134,13 +112,7 @@
                 ipBtn.addEventListener('click', openIPModal);
                 container.appendChild(ipBtn);
 
-                const settingsBtn = document.createElement('button');
-                settingsBtn.textContent = '⚙️';
-                settingsBtn.className = 'bgButton';
-                settingsBtn.style.borderBottom = '2px solid #aaa';
-                settingsBtn.style.fontSize = '14px';
-                settingsBtn.addEventListener('click', openSettings);
-                container.appendChild(settingsBtn);
+                // Кнопка настроек удалена
 
                 return container;
             }
@@ -153,59 +125,7 @@
                 }
             }
 
-            // --- Функция настроек (две колонки) ---
-            function openSettings() {
-                let overlay = document.querySelector('.fnp-modal-overlay');
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.className = 'fnp-modal-overlay';
-                    overlay.innerHTML = `
-                        <div class="fnp-modal">
-                            <div class="fnp-modal-header">Выбор серверов (${SERVER_LIST.length})</div>
-                            <div class="fnp-modal-body"></div>
-                            <div class="fnp-modal-footer">
-                                <button class="fnp-btn fnp-btn-secondary" id="fnp-cancel">Отмена</button>
-                                <button class="fnp-btn fnp-btn-primary" id="fnp-save">Сохранить</button>
-                            </div>
-                        </div>
-                    `;
-                    document.body.appendChild(overlay);
-
-                    overlay.querySelector('#fnp-cancel').onclick = () => overlay.classList.remove('open');
-                    overlay.querySelector('#fnp-save').onclick = () => {
-                        const checked = Array.from(overlay.querySelectorAll('input:checked')).map(el => +el.value).sort((a, b) => a - b);
-                        localStorage.setItem(STORAGE_PREFIX + 'servers', JSON.stringify(checked));
-                        const oldContainer = document.querySelector('.bgButtonsContainer');
-                        if (oldContainer) oldContainer.remove();
-                        const pageContent = document.querySelector(".pageContent");
-                        if (pageContent) {
-                            const buttonsContainer = createButtonsContainer();
-                            pageContent.appendChild(buttonsContainer);
-                        }
-                        overlay.classList.remove('open');
-                    };
-                }
-
-                const body = overlay.querySelector('.fnp-modal-body');
-                body.innerHTML = '';
-                const current = getSelectedServers();
-
-                // Две колонки
-                for (let i = 1; i <= SERVER_LIST.length; i++) {
-                    const server = SERVER_LIST[i - 1];
-                    const lbl = document.createElement('label');
-                    lbl.className = 'fnp-checkbox-label ' + (current.includes(i) ? 'checked' : '');
-                    lbl.innerHTML = `<input type="checkbox" value="${i}" ${current.includes(i) ? 'checked' : ''}> ${i} | ${server.name}`;
-                    lbl.querySelector('input').onchange = function() {
-                        this.parentElement.classList.toggle('checked', this.checked);
-                    };
-                    body.appendChild(lbl);
-                }
-
-                setTimeout(() => overlay.classList.add('open'), 10);
-            }
-
-            // --- СТИЛИ (все свойства исправлены на английские) ---
+            // --- СТИЛИ (оставлены только нужные) ---
             const style = document.createElement('style');
             style.textContent = `
                 .bgButton {
@@ -250,108 +170,6 @@
 
                 .bgButtonsContainer::-webkit-scrollbar {
                     display: none;
-                }
-
-                /* Модальное окно настроек (две колонки) */
-                .fnp-modal-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(0,0,0,0.7);
-                    z-index: 2147483648;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    opacity: 0;
-                    visibility: hidden;
-                    transition: 0.3s;
-                }
-                .fnp-modal-overlay.open {
-                    opacity: 1;
-                    visibility: visible;
-                }
-                .fnp-modal {
-                    background: #1a1a1a;
-                    border: 1px solid #333;
-                    border-radius: 12px;
-                    width: 90%;
-                    max-width: 600px;
-                    max-height: 85vh;
-                    display: flex;
-                    flex-direction: column;
-                    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-                }
-                .fnp-modal-header {
-                    padding: 15px;
-                    border-bottom: 1px solid #333;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    color: #fff;
-                    font-weight: bold;
-                }
-                .fnp-modal-body {
-                    padding: 15px;
-                    overflow-y: auto;
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 8px;
-                }
-                .fnp-modal-footer {
-                    padding: 15px;
-                    border-top: 1px solid #333;
-                    display: flex;
-                    justify-content: flex-end;
-                    gap: 10px;
-                }
-                .fnp-checkbox-label {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
-                    background: #222;
-                    padding: 6px;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    user-select: none;
-                    color: #ccc;
-                    font-size: 11px;
-                    border: 1px solid #333;
-                }
-                .fnp-checkbox-label:hover {
-                    background: #2a2a2a;
-                }
-                .fnp-checkbox-label input {
-                    accent-color: #2563eb;
-                }
-                .fnp-checkbox-label.checked {
-                    border-color: #2563eb;
-                    background: rgba(37, 99, 235, 0.1);
-                    color: #fff;
-                }
-                .fnp-btn {
-                    padding: 8px 16px;
-                    border-radius: 6px;
-                    border: none;
-                    cursor: pointer;
-                    font-weight: bold;
-                    transition: 0.2s;
-                }
-                .fnp-btn-primary {
-                    background: #2563eb;
-                    color: #fff;
-                }
-                .fnp-btn-primary:hover {
-                    background: #1d4ed8;
-                }
-                .fnp-btn-secondary {
-                    background: #333;
-                    color: #ccc;
-                }
-                .fnp-btn-secondary:hover {
-                    background: #444;
-                    color: #fff;
                 }
 
                 /* Модальное окно IP */
@@ -610,9 +428,6 @@
                     .ip-comparison-item:last-child {
                         border-bottom: none;
                     }
-                    .fnp-modal-body {
-                        grid-template-columns: repeat(2, 1fr);
-                    }
                 }
 
                 /* ПК – перенос на новые строки */
@@ -625,7 +440,7 @@
             `;
             document.head.appendChild(style);
 
-            // --- Функции IP (исправлены ключевые слова) ---
+            // --- Функции IP (без изменений) ---
             function openIPModal() {
                 let modal = document.getElementById('ipModal');
                 if (!modal) {
@@ -741,7 +556,7 @@
                                         <div class="ip-detail-row"><span class="ip-detail-label">Провайдер:</span><span class="ip-detail-value">${geo2.isp}</span></div>
                                         <div class="ip-detail-row"><span class="ip-detail-label">Координаты:</span><span class="ip-detail-value">${typeof geo2.latitude === 'number' ? geo2.latitude.toFixed(6) : geo2.latitude}, ${typeof geo2.longitude === 'number' ? geo2.longitude.toFixed(6) : geo2.longitude}</span></div>
                                         <div class="ip-detail-row"><span class="ip-detail-label">Часовой пояс:</span><span class="ip-detail-value">${geo2.timezone}</span></div>
-                                    </div>жб
+                                    </div>
                                 </div>
                             </div>
                             <div class="ip-distance-result">
