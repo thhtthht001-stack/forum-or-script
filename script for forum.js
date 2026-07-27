@@ -46,7 +46,7 @@
       "id": "forum-tech",
       "name": "Ответы для специалистов",
       "matches": ["https://forum.blackrussia.online/*"],
-      "url": "https://raw.githubusercontent.com/thhtthht001-stack/forum-or-script/refs/heads/main/forum_tech.js",
+      "url": "https://raw.githubusercontent.com/thhtthht001-stack/forum-or-script/refs/heads/main/tech.js",
       "enabledDefault": true
     },
     {
