@@ -4,7 +4,7 @@
       "id": "button",
       "name": "Кнопки переходники",
       "matches": ["https://forum.blackrussia.online/*"],
-      "url": "https://gitlab.com/kumiholegenda/script-for-forum/-/raw/main/button",
+      "url": "https://raw.githubusercontent.com/thhtthht001-stack/forum-or-script/refs/heads/main/button.groznny.js",
       "enabledDefault": true
     },
     {
