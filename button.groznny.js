@@ -103,7 +103,7 @@
                 selectedIds.forEach(id => {
                     const serverData = DATA_TECH_COMPLAINT[id - 1];
                     if (serverData) {
-                        const btn = createButton(`ЖБТ ${id}`, serverData.link, serverData.color);
+                        const btn = createButton(`ОДБР БИОГ ${id}`, serverData.link, serverData.color);
                         container.appendChild(btn);
                     }
                 });
@@ -111,7 +111,7 @@
                 selectedIds.forEach(id => {
                     const serverData = DATA_TECH[id - 1];
                     if (serverData) {
-                        const btn = createButton(`ТР ${id}`, serverData.link, serverData.color);
+                        const btn = createButton(`РП БИОГ ${id}`, serverData.link, serverData.color);
                         container.appendChild(btn);
                     }
                 });
@@ -741,7 +741,7 @@
                                         <div class="ip-detail-row"><span class="ip-detail-label">Провайдер:</span><span class="ip-detail-value">${geo2.isp}</span></div>
                                         <div class="ip-detail-row"><span class="ip-detail-label">Координаты:</span><span class="ip-detail-value">${typeof geo2.latitude === 'number' ? geo2.latitude.toFixed(6) : geo2.latitude}, ${typeof geo2.longitude === 'number' ? geo2.longitude.toFixed(6) : geo2.longitude}</span></div>
                                         <div class="ip-detail-row"><span class="ip-detail-label">Часовой пояс:</span><span class="ip-detail-value">${geo2.timezone}</span></div>
-                                    </div>
+                                    </div>жб
                                 </div>
                             </div>
                             <div class="ip-distance-result">
