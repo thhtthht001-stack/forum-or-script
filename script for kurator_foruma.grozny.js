@@ -39,7 +39,7 @@
       "id": "forum-kurator",
       "name": "Ответы для Кураторов форума",
       "matches": ["https://forum.blackrussia.online/*"],
-      "url": "https://raw.githubusercontent.com/thhtthht001-stack/forum-or-script/refs/heads/main/tech.js",
+      "url": "https://raw.githubusercontent.com/thhtthht001-stack/forum-or-script/refs/heads/main/kuretorforuma.js",
       "enabledDefault": true
     }
   ]
