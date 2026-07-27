@@ -4,7 +4,7 @@
       "id": "button",
       "name": "Кнопки переходники",
       "matches": ["https://forum.blackrussia.online/*"],
-      "url": "https://raw.githubusercontent.com/thhtthht001-stack/forum-or-script/refs/heads/main/button.groznny.js",
+      "url": "https://raw.githubusercontent.com/thhtthht001-stack/forum-or-script/refs/heads/main/button.grozny.js",
       "enabledDefault": true
     },
     {
