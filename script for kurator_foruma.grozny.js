@@ -8,13 +8,6 @@
       "enabledDefault": true
     },
     {
-      "id": "perenos",
-      "name": "Переносчик тем",
-      "matches": ["https://forum.blackrussia.online/*"],
-      "url": "https://gitlab.com/kumiholegenda/script-for-forum/-/raw/main/perenos.js",
-      "enabledDefault": true
-    },
-    {
       "id": "snow-forum",
       "name": "Зимняя тема",
       "matches": ["https://forum.blackrussia.online/*"],
