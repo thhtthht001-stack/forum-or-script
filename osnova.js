@@ -8,13 +8,6 @@
       "enabledDefault": true
     },
     {
-      "id": "button-old",
-      "name": "Кнопки переходники (OLD)",
-      "matches": ["https://forum.blackrussia.online/*"],
-      "url": "https://gitlab.com/kumiholegenda/script-for-forum/-/raw/main/button-old",
-      "enabledDefault": true
-    },
-    {
       "id": "perenos",
       "name": "Переносчик тем",
       "matches": ["https://forum.blackrussia.online/*"],
